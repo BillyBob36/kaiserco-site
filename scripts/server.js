@@ -30,8 +30,9 @@ const MIME = {
 
 function resolveTarget(reqPath) {
     if (reqPath === '/') return path.join(ROOT, 'public', 'index.html');
-    if (reqPath.startsWith('/data/'))    return path.join(ROOT, reqPath);
-    if (reqPath.startsWith('/scripts/')) return path.join(ROOT, reqPath);
+    if (reqPath.startsWith('/data/'))        return path.join(ROOT, reqPath);
+    if (reqPath.startsWith('/scripts/'))     return path.join(ROOT, reqPath);
+    if (reqPath.startsWith('/voice-tests/')) return path.join(ROOT, reqPath);
     return path.join(ROOT, 'public', reqPath);
 }
 

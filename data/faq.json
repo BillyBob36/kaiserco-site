@@ -1,68 +1,114 @@
 {
-  "voice": "ash",
-  "lang": "fr",
-  "speed": 1.0,
-  "instructions": "Voix posée, légèrement amusée, ton direct mais pas agressif. Diction nette, pas trop rapide. Quelques pauses courtes pour respirer.",
+  "voice": "fr-fr-Remy:DragonHDLatestNeural",
+  "lang": "fr-FR",
   "items": [
     {
       "id": "q01_qui",
       "question": "Tu es qui ?",
-      "answer": "Johann Kaiser. Indépendant depuis 2012. Je code, je modélise, je conseille. Pas une agence, pas une équipe : juste moi."
+      "answers": [
+        "Johann Kaiser. Indépendant depuis 2012. Je code, je modélise, je conseille. Pas une agence, pas une équipe : juste moi.",
+        "OK je redis. Johann Kaiser, freelance depuis quatorze ans. Je fais du dev, de la 3D, et du conseil. Je bosse seul, sans équipe.",
+        "Tu sais quoi, je commence à me demander si tu m'as vraiment écouté la première fois. La réponse a pas changé. Va relire."
+      ]
     },
     {
       "id": "q02_dev",
       "question": "Tu fais quoi en dev ?",
-      "answer": "Des applications web et mobiles sur mesure. Pas de WordPress, pas de templates Shopify recyclés. Du code que je signe."
+      "answers": [
+        "Des applications web et mobiles sur mesure. Pas de WordPress, pas de templates Shopify recyclés. Du code que je signe.",
+        "Je redis autrement : je code des apps web et mobiles, à la main, custom. Rien qui sort d'une usine à templates.",
+        "Bon écoute, à ce stade je vais te suggérer un cours d'écoute active. Du dev custom, sur mesure, point."
+      ]
     },
     {
       "id": "q03_ia",
       "question": "Et l'IA ?",
-      "answer": "J'intègre des agents et des modèles dans des outils qui font vraiment gagner du temps. Pas du buzzword, pas du chatbot gadget. Des trucs qui bossent."
+      "answers": [
+        "J'intègre des agents et des modèles dans des outils qui font vraiment gagner du temps. Pas du buzzword, pas du chatbot gadget. Des trucs qui bossent.",
+        "Si t'as pas saisi : j'utilise l'IA pour automatiser des tâches concrètes. Pas pour faire joli sur une slide.",
+        "Tu insistes hein. Bon, l'IA, pour de vrai. Voilà. Suivant ?"
+      ]
     },
     {
       "id": "q04_3d",
       "question": "Tu fais aussi de la 3D ?",
-      "answer": "Oui. Modélisation, rendu, visualisation produit, assets pour le digital ou l'impression. L'avatar que tu vois là, c'est moi qui l'ai fait."
+      "answers": [
+        "Oui. Modélisation, rendu, visualisation produit, assets pour le digital ou l'impression. L'avatar que tu vois là, c'est moi qui l'ai fait.",
+        "Je le redis : oui, je fais de la 3D. Et oui, encore une fois, c'est moi que tu regardes parler. Bonjour.",
+        "Écoute, à un moment, soit tu me crois sur parole, soit tu me regardes faire les yeux dans les yeux. Là tu fais les deux."
+      ]
     },
     {
       "id": "q05_conseil",
       "question": "Et le conseil ?",
-      "answer": "J'accompagne des équipes sur l'IA, le digital, la gestion de projet tech. Souvent, je débugge l'humain avant de toucher au code."
+      "answers": [
+        "J'accompagne des équipes sur l'IA, le digital, la gestion de projet tech. Souvent, je débugge l'humain avant de toucher au code.",
+        "Bon, le conseil. Je viens, j'écoute, je dis ce que je vois. Et parfois je sors le code. Surtout je sors les gens du brouillard.",
+        "Tu cherches à valider quoi exactement ? Le conseil, c'est du conseil. On va pas inventer un nouveau mot."
+      ]
     },
     {
       "id": "q06_pourquoi_toi",
       "question": "Pourquoi toi plutôt qu'une agence ?",
-      "answer": "Parce que tu parles à la personne qui code. Pas à un commercial qui te fera passer ensuite à un junior. Décisions rapides, exécution directe."
+      "answers": [
+        "Parce que tu parles à la personne qui code. Pas à un commercial qui te fera passer ensuite à un junior. Décisions rapides, exécution directe.",
+        "Je vais le redire en plus court : tu veux du sur-mesure, et pas du process en sept étapes ? Va pas voir une agence.",
+        "Si à ce stade t'as toujours pas la réponse, je sais pas, va voir une agence et reviens dans six mois."
+      ]
     },
     {
       "id": "q07_tarifs",
       "question": "Combien ça coûte ?",
-      "answer": "Ça dépend du projet. Forfait pour les missions cadrées, journée pour le conseil. On en parle, je te chiffre clair, sans surprise."
+      "answers": [
+        "Ça dépend du projet. Forfait pour les missions cadrées, journée pour le conseil. On en parle, je te chiffre clair, sans surprise.",
+        "OK, le tarif. Ça dépend, vraiment. Donne-moi le projet, je te donne un chiffre. Pas de grille opaque.",
+        "Tu crois que je vais te lâcher un prix random sans connaître le projet ? Allez, on bouge."
+      ]
     },
     {
       "id": "q08_delais",
       "question": "Tu prends des projets longs ?",
-      "answer": "Oui, mais pas plein temps. Je travaille en parallèle sur plusieurs missions, c'est ce qui me garde affûté. On cale un rythme dès le départ."
+      "answers": [
+        "Oui, mais pas plein temps. Je travaille en parallèle sur plusieurs missions, c'est ce qui me garde affûté. On cale un rythme dès le départ.",
+        "Je redis : oui aux longs projets, non au temps plein chez un seul. Plusieurs trucs en parallèle, c'est mon rythme.",
+        "Long, court, moyen. À ce rythme, tu vas finir par me demander si je prends le métro. La réponse est dans la première version."
+      ]
     },
     {
       "id": "q09_stack",
       "question": "Tu travailles avec quelles technos ?",
-      "answer": "JavaScript, Python, Three.js, les API Claude et OpenAI, Blender pour la 3D. Le bon outil pour le bon job, pas l'inverse."
+      "answers": [
+        "JavaScript, Python, Three.js, les API Claude et OpenAI, Blender pour la 3D. Le bon outil pour le bon job, pas l'inverse.",
+        "OK la stack. JS, Python, Three.js, les API IA, Blender. Et tout ce qui tombe selon le projet.",
+        "Tu veux un CV technique aligné en colonnes ? Je peux t'envoyer ça par mail. Suivant."
+      ]
     },
     {
       "id": "q10_remote",
       "question": "Tu bosses à distance ?",
-      "answer": "Oui, par défaut. Je suis basé à Paris, je peux passer sur site en Île-de-France si c'est utile. Le reste, on fait ça en visio."
+      "answers": [
+        "Oui, par défaut. Je suis basé à Paris, je peux passer sur site en Île-de-France si c'est utile. Le reste, on fait ça en visio.",
+        "Remote oui. Sur site, quand ça vaut le coup, à Paris ou en Île-de-France. Pas de déménagement à prévoir.",
+        "À ce point je commence à me demander si tu testes ma patience. Remote. Voilà. Vraiment."
+      ]
     },
     {
       "id": "q11_refus",
       "question": "Y a des trucs que tu refuses ?",
-      "answer": "Les projets sans vision claire, les gens qui veulent juste cocher une case IA, et tout ce qui demande de mentir aux utilisateurs. Le reste, on discute."
+      "answers": [
+        "Les projets sans vision claire, les gens qui veulent juste cocher une case IA, et tout ce qui demande de mentir aux utilisateurs. Le reste, on discute.",
+        "Je le redis en plus court : pas de bullshit, pas de greenwashing IA, pas de manipulation. Le reste, ouvert.",
+        "Tu cherches à savoir si je vais refuser de répondre à ta prochaine question ? Bingo, tu progresses."
+      ]
     },
     {
-      "id": "q12_contact",
-      "question": "Comment on bosse ensemble ?",
-      "answer": "Tu m'écris à johann point metagora arobase gmail point com. On cale un appel, on regarde si c'est aligné, et on démarre. Simple."
+      "id": "q12_demarrer",
+      "question": "Comment je commence avec toi ?",
+      "answers": [
+        "Tu m'écris à johann point metagora arobase gmail point com. On cale un appel, on regarde si c'est aligné, et on démarre. Simple.",
+        "Pas plus compliqué que ça : un mail, un appel, et si on s'entend on lance. Mon mail est juste en bas de la page.",
+        "Sérieux ? À ce stade, écris-moi vraiment, parce qu'on a déjà fait le tour trois fois."
+      ]
     }
   ]
 }

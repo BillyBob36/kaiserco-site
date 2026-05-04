@@ -1,19 +1,28 @@
 // avatar-player.js
-// Standalone ES module: 3D talking avatar driven by a pre-recorded MP3
+// Standalone ES module: 3D talking avatar driven by pre-recorded WAVs
 // + a pre-computed viseme timeline JSON.
 //
 // API:
 //   const player = new AvatarPlayer({ container, avatarUrl, visemesUrl, voicesBaseUrl });
 //   await player.init();
-//   await player.play(clipId);
+//   await player.play(clipId);   // cycles through variants 1→2→3→1...
 //   player.stop();
-//   player.on('ended', () => {});
+//   player.on('ended', ({ clipId, variantIndex, isLast }) => {});
 //
-// The viseme JSON is expected as a map { [clipId]: { duration, frames: [{ t, v }, ...] } }
-// where `t` is in seconds and `v` is one of the keys of VISEME_DEFAULTS
-// (viseme_sil, viseme_PP, …). `frames` MUST be sorted by `t`.
-// Each clip's audio URL is `${voicesBaseUrl}/${clipId}.mp3` unless overridden
-// per-clip via an `audioUrl` field.
+// The viseme JSON is expected as a map of clipId → metadata:
+//   { [clipId]: {
+//       question: string,
+//       answers: string[],          // text of each variant
+//       variants: [
+//         { duration: number, frames: [{ t, v }, ...] }, // v1
+//         { duration: number, frames: [...] },           // v2
+//         { duration: number, frames: [...] },           // v3
+//       ]
+//   } }
+//
+// Audio URLs follow `${voicesBaseUrl}/${clipId}_v${n}.wav` (n = 1..variants.length).
+// Each call to play(clipId) advances the variant counter for that clip,
+// looping back to v1 after the last variant.
 
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -102,9 +111,12 @@ export class AvatarPlayer {
 
         // Audio + visemes
         this.audioEl = null;
-        this.clips = {};            // { clipId: { audioUrl, frames } }
-        this.activeClip = null;     // currently playing clip object
-        this.frameCursor = 0;       // monotonic index into activeClip.frames
+        this.clips = {};            // { clipId: { question, answers, variants:[...] } }
+        this.variantCounters = {};  // { clipId: number — next variant index to play }
+        this.activeClip = null;     // currently playing variant ({ duration, frames })
+        this.activeClipId = null;
+        this.activeVariantIndex = 0;
+        this.frameCursor = 0;
         this.isSpeaking = false;
 
         // Anim state
@@ -456,12 +468,24 @@ export class AvatarPlayer {
     async play(clipId) {
         const clip = this.clips[clipId];
         if (!clip) throw new Error(`AvatarPlayer: unknown clip "${clipId}"`);
+        const variants = clip.variants || [];
+        if (!variants.length) throw new Error(`AvatarPlayer: clip "${clipId}" has no variants`);
         if (this.isSpeaking) this.stop();
 
-        this.activeClip = clip;
+        // Advance the per-clip variant counter (0-based, wraps modulo length).
+        const counter = this.variantCounters[clipId] || 0;
+        const varIdx = counter % variants.length;
+        this.variantCounters[clipId] = counter + 1;
+        const variant = variants[varIdx];
+        if (!variant || !variant.frames) {
+            throw new Error(`AvatarPlayer: variant ${varIdx + 1} of "${clipId}" missing/invalid`);
+        }
+
+        this.activeClip = variant;
         this.activeClipId = clipId;
+        this.activeVariantIndex = varIdx;
         this.frameCursor = 0;
-        this.audioEl.src = clip.audioUrl || `${this.voicesBaseUrl}/${clipId}.wav`;
+        this.audioEl.src = `${this.voicesBaseUrl}/${clipId}_v${varIdx + 1}.wav`;
 
         // Triggered from a user gesture upstream: play() returns a Promise,
         // we set isSpeaking only once the audio is actually playing so the
@@ -497,11 +521,22 @@ export class AvatarPlayer {
 
     _onAudioEnded() {
         if (!this.isSpeaking) return;
+        const clipId = this.activeClipId;
+        const variantIndex = this.activeVariantIndex;
+        const variantsLen = (this.clips[clipId]?.variants?.length) || 0;
+        const isLast = variantsLen > 0 && variantIndex === variantsLen - 1;
         this.isSpeaking = false;
         this._setTalking(false);
         this.activeClip = null;
+        this.activeClipId = null;
         this.frameCursor = 0;
-        this._emit('ended');
+        this._emit('ended', { clipId, variantIndex, isLast });
+    }
+
+    /** Reset the variant counter for a clip (or all clips if no id given). */
+    resetVariant(clipId) {
+        if (clipId) delete this.variantCounters[clipId];
+        else this.variantCounters = {};
     }
 
     _setTalking(talking) {
