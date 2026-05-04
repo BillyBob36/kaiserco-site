@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Build visemes — KAISER CO</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font: 14px/1.5 monospace; background: #111; color: #eee; padding: 24px; max-width: 900px; margin: auto; }
+    h1 { font-size: 18px; margin-bottom: 16px; letter-spacing: 0.05em; }
+    p { margin-bottom: 12px; opacity: 0.8; }
+    button { background: #fff; color: #000; border: none; padding: 12px 24px; font: inherit; cursor: pointer; margin-right: 8px; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.alt { background: transparent; color: #fff; border: 1px solid #fff; }
+    #log { margin-top: 24px; padding: 16px; background: #000; min-height: 300px; max-height: 60vh; overflow-y: auto; white-space: pre-wrap; font-size: 12px; }
+    .ok { color: #6efb6e; }
+    .err { color: #ff6e6e; }
+    .info { color: #6ec6ff; }
+</style>
+</head>
+<body>
+<h1>// BUILD VISEMES // KAISER CO</h1>
+<p>Cette page lit les MP3 déjà générés dans <code>public/assets/voices/</code>, les analyse via wawa-lipsync, et produit un fichier <code>visemes.json</code> consolidé.</p>
+<p>Ouvre cette page <strong>via un serveur local</strong> (ex: <code>npx http-server public -p 8080</code> à la racine + ouvrir <code>http://localhost:8080/../scripts/build-visemes.html</code>) ou utilise <code>npm run serve</code>.</p>
+<button id="btn-build">▶ Lancer l'analyse</button>
+<button id="btn-download" class="alt" disabled>↓ Télécharger visemes.json</button>
+<div id="log"></div>
+
+<script type="module">
+import { Lipsync } from '../public/lib/wawa-lipsync.es.js';
+
+const log = document.getElementById('log');
+const btnBuild = document.getElementById('btn-build');
+const btnDownload = document.getElementById('btn-download');
+
+function L(msg, cls = '') {
+    const span = document.createElement('div');
+    span.textContent = msg;
+    if (cls) span.className = cls;
+    log.appendChild(span);
+    log.scrollTop = log.scrollHeight;
+}
+
+let visemesData = null;
+
+async function build() {
+    btnBuild.disabled = true;
+    log.textContent = '';
+    L('→ Chargement de data/faq.json...', 'info');
+
+    let faq;
+    try {
+        const res = await fetch('/data/faq.json');
+        faq = await res.json();
+    } catch (e) {
+        L('✗ Impossible de charger faq.json — sers le projet via "node scripts/server.js".', 'err');
+        btnBuild.disabled = false;
+        return;
+    }
+    L(`  ${faq.items.length} items à analyser`, 'info');
+
+    const lipsync = new Lipsync({ fftSize: 2048, historySize: 10 });
+    const result = {};
+
+    for (const item of faq.items) {
+        L(`\n→ ${item.id}`, 'info');
+        try {
+            const frames = await analyzeOne(`/assets/voices/${item.id}.wav`, lipsync);
+            const duration = frames.length ? frames[frames.length - 1].t : 0;
+            // Embed question + answer so the deployed site only needs visemes.json.
+            result[item.id] = {
+                question: item.question,
+                answer: item.answer,
+                duration,
+                frames,
+            };
+            L(`  ✓ ${frames.length} frames sur ${duration.toFixed(2)}s`, 'ok');
+        } catch (e) {
+            L(`  ✗ ${e.message}`, 'err');
+        }
+    }
+
+    visemesData = result;
+    btnDownload.disabled = false;
+    L(`\n→ Terminé. Clique sur "Télécharger" puis place le fichier dans public/assets/voices/visemes.json`, 'ok');
+}
+
+async function analyzeOne(url, lipsync) {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.src = url;
+
+        const ctx = lipsync.audioContext;
+        let source;
+        try {
+            source = ctx.createMediaElementSource(audio);
+        } catch (e) {
+            reject(new Error('createMediaElementSource a échoué (fichier déjà attaché ?)'));
+            return;
+        }
+        source.connect(lipsync.analyser);
+        // Pas de connexion à destination → muet, mais l'analyser reçoit bien les données.
+
+        lipsync.audioSource = audio;
+        lipsync.history = [];
+        lipsync.features = null;
+        lipsync.state = 'silence';
+
+        const frames = [];
+        const SAMPLE_INTERVAL_MS = 16; // ~60 Hz
+        let interval = null;
+
+        audio.addEventListener('canplay', () => {
+            audio.play().catch(reject);
+        }, { once: true });
+
+        audio.addEventListener('play', () => {
+            interval = setInterval(() => {
+                lipsync.processAudio();
+                frames.push({
+                    t: +audio.currentTime.toFixed(3),
+                    v: lipsync.viseme,
+                    vol: +(lipsync.features?.volume ?? 0).toFixed(3),
+                });
+            }, SAMPLE_INTERVAL_MS);
+        }, { once: true });
+
+        audio.addEventListener('ended', () => {
+            clearInterval(interval);
+            try { source.disconnect(); } catch {}
+            resolve(frames);
+        }, { once: true });
+
+        audio.addEventListener('error', () => {
+            clearInterval(interval);
+            reject(new Error(`Audio non chargé: ${url}`));
+        }, { once: true });
+    });
+}
+
+btnBuild.addEventListener('click', build);
+
+btnDownload.addEventListener('click', () => {
+    if (!visemesData) return;
+    const blob = new Blob([JSON.stringify(visemesData)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'visemes.json';
+    a.click();
+    URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>

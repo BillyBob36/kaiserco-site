@@ -1,0 +1,68 @@
+{
+  "voice": "ash",
+  "lang": "fr",
+  "speed": 1.0,
+  "instructions": "Voix posée, légèrement amusée, ton direct mais pas agressif. Diction nette, pas trop rapide. Quelques pauses courtes pour respirer.",
+  "items": [
+    {
+      "id": "q01_qui",
+      "question": "Tu es qui ?",
+      "answer": "Johann Kaiser. Indépendant depuis 2012. Je code, je modélise, je conseille. Pas une agence, pas une équipe : juste moi."
+    },
+    {
+      "id": "q02_dev",
+      "question": "Tu fais quoi en dev ?",
+      "answer": "Des applications web et mobiles sur mesure. Pas de WordPress, pas de templates Shopify recyclés. Du code que je signe."
+    },
+    {
+      "id": "q03_ia",
+      "question": "Et l'IA ?",
+      "answer": "J'intègre des agents et des modèles dans des outils qui font vraiment gagner du temps. Pas du buzzword, pas du chatbot gadget. Des trucs qui bossent."
+    },
+    {
+      "id": "q04_3d",
+      "question": "Tu fais aussi de la 3D ?",
+      "answer": "Oui. Modélisation, rendu, visualisation produit, assets pour le digital ou l'impression. L'avatar que tu vois là, c'est moi qui l'ai fait."
+    },
+    {
+      "id": "q05_conseil",
+      "question": "Et le conseil ?",
+      "answer": "J'accompagne des équipes sur l'IA, le digital, la gestion de projet tech. Souvent, je débugge l'humain avant de toucher au code."
+    },
+    {
+      "id": "q06_pourquoi_toi",
+      "question": "Pourquoi toi plutôt qu'une agence ?",
+      "answer": "Parce que tu parles à la personne qui code. Pas à un commercial qui te fera passer ensuite à un junior. Décisions rapides, exécution directe."
+    },
+    {
+      "id": "q07_tarifs",
+      "question": "Combien ça coûte ?",
+      "answer": "Ça dépend du projet. Forfait pour les missions cadrées, journée pour le conseil. On en parle, je te chiffre clair, sans surprise."
+    },
+    {
+      "id": "q08_delais",
+      "question": "Tu prends des projets longs ?",
+      "answer": "Oui, mais pas plein temps. Je travaille en parallèle sur plusieurs missions, c'est ce qui me garde affûté. On cale un rythme dès le départ."
+    },
+    {
+      "id": "q09_stack",
+      "question": "Tu travailles avec quelles technos ?",
+      "answer": "JavaScript, Python, Three.js, les API Claude et OpenAI, Blender pour la 3D. Le bon outil pour le bon job, pas l'inverse."
+    },
+    {
+      "id": "q10_remote",
+      "question": "Tu bosses à distance ?",
+      "answer": "Oui, par défaut. Je suis basé à Paris, je peux passer sur site en Île-de-France si c'est utile. Le reste, on fait ça en visio."
+    },
+    {
+      "id": "q11_refus",
+      "question": "Y a des trucs que tu refuses ?",
+      "answer": "Les projets sans vision claire, les gens qui veulent juste cocher une case IA, et tout ce qui demande de mentir aux utilisateurs. Le reste, on discute."
+    },
+    {
+      "id": "q12_contact",
+      "question": "Comment on bosse ensemble ?",
+      "answer": "Tu m'écris à johann point metagora arobase gmail point com. On cale un appel, on regarde si c'est aligné, et on démarre. Simple."
+    }
+  ]
+}

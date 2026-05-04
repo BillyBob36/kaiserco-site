@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KAISER CO — Johann Kaiser, indépendant depuis 2012. Développement, intelligence artificielle, modélisation 3D, conseil. Paris.">
+<title>KAISER//CO — Johann Kaiser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Fraunces:ital,opsz,wght@0,144,300..900;1,144,300..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.1/examples/jsm/",
+    "wiggle": "https://cdn.jsdelivr.net/npm/wiggle/+esm"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- ── 1. HEADER FLOTTANT ───────────────────────────────────────────── -->
+<header id="hdr" aria-label="Navigation">
+    <a class="logo" href="#top" aria-label="KAISER CO — accueil">
+        <span>KAISER</span><em>//</em><span>CO</span>
+    </a>
+    <nav>
+        <a href="#manifeste">Manifeste</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<!-- ── 2. HERO ÉCLATÉ ───────────────────────────────────────────────── -->
+<section id="top" class="hero">
+    <h1 class="hero-text" aria-label="Je code. Je pense. Je modélise. Depuis 2012.">
+        <span class="line l1">JE&nbsp;CODE.</span>
+        <span class="line l2">JE&nbsp;<i class="glitch" data-text="PENSE">PENSE</i>.</span>
+        <span class="line l3">JE&nbsp;MODÉLISE.</span>
+        <span class="line l4">DEPUIS&nbsp;<b>2012</b>.</span>
+        <span class="cursor" aria-hidden="true">_</span>
+    </h1>
+    <p class="hero-sub">KAISER&nbsp;CO &mdash; Paris, indépendant.</p>
+    <div class="hero-mark" aria-hidden="true"></div>
+</section>
+
+<!-- ── 3. AVATAR 3D + FAQ ───────────────────────────────────────────── -->
+<section id="avatar-section" aria-label="Pose-moi une question">
+    <div class="avatar-headline">
+        <h2>PARLE-<wbr>MOI.</h2>
+        <p>Choisis une question. Je réponds.</p>
+    </div>
+
+    <div class="avatar-stage">
+        <!-- Slot three.js : l'AvatarPlayer monte ici son canvas + élément <audio>. -->
+        <!-- Le canvas est rendu sur fond 100% transparent (alpha buffer + clearAlpha 0). -->
+        <div id="kaiser-avatar-slot" class="avatar-slot">
+            <div class="avatar-loading">// chargement avatar 3D...</div>
+        </div>
+
+        <ul id="faq-list" class="faq-list" aria-label="Questions fréquentes">
+            <!-- Rempli dynamiquement par script.js depuis data/faq.json -->
+        </ul>
+    </div>
+
+    <button id="faq-stop" class="faq-stop" hidden aria-label="Arrêter la lecture">
+        ✕ Arrêter
+    </button>
+</section>
+
+<!-- ── 4. MANIFESTO ─────────────────────────────────────────────────── -->
+<section id="manifeste" class="manifesto">
+    <p class="m-line m1">Je ne fais pas de sites WordPress.</p>
+    <p class="m-line m2">Je ne mets pas de stock photos.</p>
+    <p class="m-line m3">Je code des choses qui n'existaient pas hier.</p>
+    <p class="m-line m4">Si tu cherches du corporate, ça n'est pas moi.</p>
+</section>
+
+<!-- ── 5. SERVICES (grille cassée) ──────────────────────────────────── -->
+<section id="services" class="services">
+    <h2 class="services-title">CE&nbsp;QUE&nbsp;JE&nbsp;FAIS.</h2>
+
+    <article class="srv srv-dev">
+        <div class="srv-img"><img src="./assets/img/service-dev.jpg" alt="" loading="lazy"></div>
+        <div class="srv-body">
+            <span class="srv-num">01</span>
+            <h3>DEV.</h3>
+            <p class="srv-tag">Des apps qui marchent. Pas des slides qui parlent.</p>
+            <p class="srv-desc">Applications web et mobiles sur mesure, automatisation de processus métier, intégrations API. Code propre, livrable.</p>
+        </div>
+    </article>
+
+    <article class="srv srv-ia">
+        <div class="srv-img"><img src="./assets/img/service-ia.jpg" alt="" loading="lazy"></div>
+        <div class="srv-body">
+            <span class="srv-num">02</span>
+            <h3>IA.</h3>
+            <p class="srv-tag">Pas du buzzword. Des agents qui font le boulot.</p>
+            <p class="srv-desc">Intégration de modèles, agents autonomes, traitement de données, RAG, fine-tuning. Ce qui a du sens, pas ce qui fait joli.</p>
+        </div>
+    </article>
+
+    <article class="srv srv-3d">
+        <div class="srv-img"><img src="./assets/img/service-3d.jpg" alt="" loading="lazy"></div>
+        <div class="srv-body">
+            <span class="srv-num">03</span>
+            <h3>3D.</h3>
+            <p class="srv-tag">Modèles, rendus, mondes. Du pixel au polygone.</p>
+            <p class="srv-desc">Modélisation, rigging, rendu, intégration three.js / WebGL, visualisation produit. L'avatar ci-dessus, c'est moi qui l'ai fait.</p>
+        </div>
+    </article>
+
+    <article class="srv srv-conseil">
+        <div class="srv-img"><img src="./assets/img/service-conseil.jpg" alt="" loading="lazy"></div>
+        <div class="srv-body">
+            <span class="srv-num">04</span>
+            <h3>CONSEIL.</h3>
+            <p class="srv-tag">Je débugge ton équipe avant ton code.</p>
+            <p class="srv-desc">Accompagnement sur l'IA, le digital, la gestion de projets tech. Pour les équipes qui doutent, ou celles qui foncent trop vite.</p>
+        </div>
+    </article>
+</section>
+
+<!-- ── 6. À PROPOS ──────────────────────────────────────────────────── -->
+<section class="about">
+    <div class="about-text">
+        <h2>JOHANN&nbsp;KAISER.</h2>
+        <p>14 ans d'indépendance. Dev, IA, 3D, formation. Basé Paris&nbsp;12<sup>e</sup>. Je bosse en remote, sur site en Île-de-France quand c'est utile, et je refuse les open spaces depuis 2012.</p>
+        <p class="about-meta">Entrepreneur individuel · Micro-entreprise · SIREN 791&nbsp;069&nbsp;610</p>
+    </div>
+</section>
+
+<!-- ── 7. CONTACT ───────────────────────────────────────────────────── -->
+<section id="contact" class="contact">
+    <p class="contact-label">Écris&#8209;moi.</p>
+    <a class="contact-mail" href="mailto:johann.metagora@gmail.com">
+        johann.metagora<wbr>@gmail.com
+    </a>
+    <p class="contact-note">Réponse sous 24h. La plupart du temps.</p>
+</section>
+
+<!-- ── 8. FOOTER ────────────────────────────────────────────────────── -->
+<footer>
+    <div class="foot-left">
+        KAISER JOHANN — KAISER&nbsp;CO<br>
+        Entrepreneur individuel · SIREN 791&nbsp;069&nbsp;610<br>
+        Paris 75012, France
+    </div>
+    <div class="foot-right">
+        © 2026<br>
+        All rights, no logos.
+    </div>
+</footer>
+
+<script type="module" src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "kaiserco-site",
+  "version": "1.0.0",
+  "description": "Site vitrine KAISER CO avec avatar 3D pré-enregistré",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build:voices": "node scripts/build-voices.js",
+    "serve": "node scripts/server.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

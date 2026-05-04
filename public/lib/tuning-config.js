@@ -1,0 +1,28 @@
+// tuning-config.js
+export const TUNING_DEFAULTS = {
+    "lerpSpeed": 0.3,
+    "lerpDecay": 0.3,
+    "resetToNeutral": 0.5,
+    "maxIntensity": 1.2,
+    "openMultiplier": 0.5,
+    "tightMultiplier": 1.9,
+    "duckMultiplier": 1.2,
+    "jawBoost": 0.3,
+    "tongueScale": 1,
+    "silenceThreshold": 0.08,
+    "blinkIntervalMin": 1,
+    "blinkIntervalMax": 8,
+    "blinkCloseDuration": 60,
+    "blinkHoldDuration": 150,
+    "doubleBlink": 0.15,
+    "microMouthAmp": 0.3,
+    "microBrowAmp": 0.6,
+    "microSpeed": 3.6,
+    "smileIntensity": 0.25,
+    "breathAmplitude": 0.15,
+    "breathSpeed": 3.6,
+    "headDriftAmp": 0.3,
+    "hairFlex": 1,
+    "rtVoice": "ash",
+    "rtLang": "fr"
+};
