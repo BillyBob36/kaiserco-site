@@ -1,0 +1,111 @@
+{
+  "lang": "en-US",
+  "voice": "en-us-Davis:DragonHDLatestNeural",
+  "site": {
+    "nav": { "manifesto": "Manifesto", "services": "Services", "contact": "Contact" },
+    "hero": {
+      "lines": ["I CODE.", "I THINK.", "I MODEL.", "SINCE 2012."],
+      "glitchWord": "THINK",
+      "sub": "KAISER CO — Paris, independent."
+    },
+    "avatar": {
+      "headline": "TALK TO ME.",
+      "sub": "Pick a question. I'll answer.",
+      "loading": "// loading 3D avatar...",
+      "stop": "✕ Stop"
+    },
+    "manifesto": [
+      "I don't build WordPress sites.",
+      "I don't use stock photos.",
+      "I code things that didn't exist yesterday.",
+      "If you're looking for corporate, that's not me."
+    ],
+    "services": {
+      "title": "WHAT I DO.",
+      "items": [
+        { "h": "DEV.",      "tag": "Apps that work. Not slides that talk.",            "desc": "Custom web and mobile applications, business process automation, API integrations. Clean, shippable code." },
+        { "h": "AI.",       "tag": "No buzzwords. Agents that do the job.",            "desc": "Model integration, autonomous agents, data processing, RAG, fine-tuning. What makes sense, not what looks pretty." },
+        { "h": "3D.",       "tag": "Models, renders, worlds. From pixel to polygon.",  "desc": "Modeling, rigging, rendering, three.js / WebGL integration, product visualization. The avatar above — I made it." },
+        { "h": "ADVISORY.", "tag": "I debug your team before your code.",              "desc": "Coaching on AI, digital, tech project management. For teams in doubt, or those moving too fast." }
+      ]
+    },
+    "about": {
+      "name": "JOHANN KAISER.",
+      "p1": "14 years independent. Dev, AI, 3D, training. Based in Paris 12<sup>th</sup>. I work remote, on-site in Île-de-France when it's useful, and I've been refusing open offices since 2012.",
+      "meta": "Sole proprietor · Micro-enterprise · SIREN 791 069 610"
+    },
+    "contact": {
+      "label": "Write&nbsp;me.",
+      "note": "Reply within 24h. Most of the time."
+    },
+    "footer": {
+      "left1": "KAISER JOHANN — KAISER CO",
+      "left2": "Sole proprietor · SIREN 791 069 610",
+      "left3": "Paris 75012, France",
+      "right1": "© 2026",
+      "right2": "All rights, no logos."
+    }
+  },
+  "items": [
+    { "id": "q01_qui",          "question": "Who are you?",                       "answers": [
+      "Johann Kaiser. Independent since 2012. I code, I model, I advise. Not an agency, not a team — just me.",
+      "OK, let me say it again. Johann Kaiser, freelance for fourteen years. I do dev, 3D, and consulting. I work alone, no team.",
+      "You know what, I'm starting to think you're not really listening. Same answer. Try a real question."
+    ]},
+    { "id": "q02_dev",          "question": "What do you do in dev?",             "answers": [
+      "Custom web and mobile applications. No WordPress, no recycled Shopify templates. Code I sign off on.",
+      "Saying it differently: I build web and mobile apps, by hand, custom. Nothing from a template factory.",
+      "Look, at this point I'd suggest taking a listening class. Custom dev, made-to-measure, period."
+    ]},
+    { "id": "q03_ia",           "question": "And AI?",                            "answers": [
+      "I integrate agents and models into tools that actually save time. No buzzwords, no gadget chatbots. Stuff that works.",
+      "If you didn't catch it: I use AI to automate concrete tasks. Not to look fancy on a slide.",
+      "You're persistent, huh. Fine — AI, for real. There. Next?"
+    ]},
+    { "id": "q04_3d",           "question": "Do you do 3D too?",                  "answers": [
+      "Yes. Modeling, rendering, product visualization, assets for digital or print. The avatar you're looking at — I made it.",
+      "Saying it again: yes, I do 3D. And yes, once again, that's me you're watching speak. Hi.",
+      "Look, at some point either you take my word for it, or you watch me do it eyes-to-eyes. Right now you're doing both."
+    ]},
+    { "id": "q05_conseil",      "question": "And consulting?",                    "answers": [
+      "I work with teams on AI, digital, tech project management. Often I debug the human before I touch the code.",
+      "OK, consulting. I come in, I listen, I say what I see. And sometimes I write code. Mostly I pull people out of the fog.",
+      "What exactly are you trying to confirm? Consulting is consulting. We're not inventing a new word."
+    ]},
+    { "id": "q06_pourquoi_toi", "question": "Why you rather than an agency?",      "answers": [
+      "Because you're talking to the person who codes. Not a salesperson who'll later pass you to a junior. Fast decisions, direct execution.",
+      "Shorter version: you want custom work, not a seven-step process? Don't go to an agency.",
+      "If at this point you still don't have the answer, I don't know — go to an agency, come back in six months."
+    ]},
+    { "id": "q07_tarifs",       "question": "How much does it cost?",             "answers": [
+      "Depends on the project. Flat rate for scoped missions, daily rate for consulting. We talk, I quote you clearly, no surprises.",
+      "OK, the price. It depends, really. Give me the project, I give you a number. No opaque grid.",
+      "You think I'll throw a random number without knowing the project? Come on, let's move."
+    ]},
+    { "id": "q08_delais",       "question": "Do you take long projects?",         "answers": [
+      "Yes, but not full-time. I work on several missions in parallel, that's what keeps me sharp. We set the rhythm at the start.",
+      "Saying it again: yes to long projects, no to full-time at one place. Multiple things in parallel — that's my rhythm.",
+      "Long, short, medium. At this rate you're going to ask if I take the metro. I've already answered twice, I'm not doing it again."
+    ]},
+    { "id": "q09_stack",        "question": "What tech do you use?",              "answers": [
+      "JavaScript, Python, Three.js, the Claude and OpenAI APIs, Blender for 3D. Right tool for the right job, not the other way around.",
+      "OK, the stack. JS, Python, Three.js, the AI APIs, Blender. And whatever else fits the project.",
+      "You want a technical CV in clean columns? I can email it to you. Next."
+    ]},
+    { "id": "q10_remote",       "question": "Do you work remotely?",              "answers": [
+      "Yes, by default. I'm based in Paris, I can come on-site in the Paris region if it's useful. The rest, we do over video.",
+      "Remote, yes. On-site when it's worth it, in Paris or the Île-de-France. No relocation needed.",
+      "At this point I'm starting to wonder if you're testing my patience. Remote. There. Really."
+    ]},
+    { "id": "q11_refus",        "question": "Are there things you refuse?",       "answers": [
+      "Projects without a clear vision, people who just want to tick an AI box, and anything that requires lying to users. The rest, we talk.",
+      "Shorter version: no bullshit, no AI greenwashing, no manipulation. The rest, open.",
+      "Are you trying to find out if I'll refuse to answer your next question? Bingo, you're getting there."
+    ]},
+    { "id": "q12_demarrer",     "question": "How do I start with you?",            "answers": [
+      "You email me at johann dot metagora at gmail dot com. We schedule a call, see if we're aligned, and we start. Simple.",
+      "Not more complicated than that: an email, a call, and if we click we kick off. My email's right at the bottom of the page.",
+      "Seriously? At this point, just email me for real, because we've gone around three times already."
+    ]}
+  ]
+}

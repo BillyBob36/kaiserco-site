@@ -8,3 +8,6 @@ Thumbs.db
 .idea/
 .claude/
 voice-tests/
+voice-tests-multilang/
+# Local WAV (used only for viseme analysis); MP3 is what's served.
+public/assets/voices/**/*.wav

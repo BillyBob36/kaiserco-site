@@ -76,12 +76,13 @@ const _HEAD_DRIFT_SPEED = 1.0 / 0.5;
 const CROSSFADE_DURATION = 0.8;
 
 export class AvatarPlayer {
-    constructor({ container, avatarUrl, visemesUrl, voicesBaseUrl = '/assets/voices' }) {
+    constructor({ container, avatarUrl, voicesBaseUrl = '/assets/voices', lang = 'fr', audioFormat = 'mp3' }) {
         if (!container) throw new Error('AvatarPlayer: container is required');
         this.container = container;
         this.avatarUrl = avatarUrl;
-        this.visemesUrl = visemesUrl;
         this.voicesBaseUrl = voicesBaseUrl.replace(/\/+$/, '');
+        this.lang = lang;
+        this.audioFormat = audioFormat; // 'mp3' or 'wav'
 
         this.cfg = { ...TUNING_DEFAULTS };
         this.visemeMap = {};
@@ -409,19 +410,44 @@ export class AvatarPlayer {
     }
 
     async _loadVisemes() {
-        if (!this.visemesUrl) return;
+        const url = `${this.voicesBaseUrl}/${this.lang}/visemes.json`;
         try {
-            const res = await fetch(this.visemesUrl);
+            const res = await fetch(url);
             if (!res.ok) {
-                console.warn(`AvatarPlayer: visemes JSON missing (${res.status}) — running in idle-only mode.`);
+                console.warn(`AvatarPlayer: visemes JSON missing for ${this.lang} (${res.status}) — idle-only.`);
                 this.clips = {};
+                this.site = null;
                 return;
             }
-            this.clips = await res.json();
+            const data = await res.json();
+            // visemes.json may be { lang, site, clips } (multilang format)
+            // or a flat map { clipId: {...} } (legacy).
+            if (data.clips && typeof data.clips === 'object') {
+                this.clips = data.clips;
+                this.site = data.site || null;
+            } else {
+                this.clips = data;
+                this.site = null;
+            }
         } catch (e) {
-            console.warn('AvatarPlayer: failed to load visemes JSON — idle-only mode.', e);
+            console.warn(`AvatarPlayer: failed to load visemes JSON for ${this.lang} — idle-only.`, e);
             this.clips = {};
+            this.site = null;
         }
+    }
+
+    /** Returns the site i18n payload (texts), if present in the loaded visemes.json. */
+    getSiteTexts() {
+        return this.site;
+    }
+
+    /** Hot-swap language: re-fetch visemes for the new locale and reset counters. */
+    async setLanguage(lang) {
+        if (lang === this.lang) return;
+        this.lang = lang;
+        this.stop();
+        this.variantCounters = {};
+        await this._loadVisemes();
     }
 
     // Hair: combine color (from emissiveMap) with alpha mask (from baseColor).
@@ -485,7 +511,7 @@ export class AvatarPlayer {
         this.activeClipId = clipId;
         this.activeVariantIndex = varIdx;
         this.frameCursor = 0;
-        this.audioEl.src = `${this.voicesBaseUrl}/${clipId}_v${varIdx + 1}.wav`;
+        this.audioEl.src = `${this.voicesBaseUrl}/${this.lang}/${clipId}_v${varIdx + 1}.${this.audioFormat}`;
 
         // Triggered from a user gesture upstream: play() returns a Promise,
         // we set isSpeaking only once the audio is actually playing so the

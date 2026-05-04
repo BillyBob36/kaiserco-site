@@ -1,12 +1,6 @@
-// Pré-calcul des timelines de visemes côté Node (sans browser).
-// Analyse RMS + Zero-Crossing-Rate sur chaque WAV de public/assets/voices/.
-// Pour chaque item de faq.json, traite TOUTES les variantes (v1, v2, v3) et les
-// agrège dans un objet `variants[]`.
-//
-// Output: public/assets/voices/visemes.json
-//
-// Format produit:
-//   { [clipId]: { question, answers: [...], variants: [{duration, frames}, ...] } }
+// Pré-calcul des timelines de visemes côté Node, pour toutes les langues.
+// Lit les WAV dans public/assets/voices/<lang>/ et écrit visemes.json par langue.
+// Usage: node scripts/build-visemes-node.js [--only=fr,en]
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -14,10 +8,13 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const voicesDir = path.join(ROOT, 'public', 'assets', 'voices');
-const faqPath = path.join(ROOT, 'data', 'faq.json');
+const i18nDir = path.join(ROOT, 'data', 'i18n');
+const voicesRoot = path.join(ROOT, 'public', 'assets', 'voices');
 
-const faq = JSON.parse(fs.readFileSync(faqPath, 'utf8'));
+const args = process.argv.slice(2);
+const langFilter = args.find(a => a.startsWith('--only='))?.slice(7).split(',').filter(Boolean);
+const allLangs = fs.readdirSync(i18nDir).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
+const langs = langFilter ? allLangs.filter(l => langFilter.includes(l)) : allLangs;
 
 const FRAME_MS = 16;
 const SILENCE_RMS = 0.018;
@@ -30,9 +27,7 @@ function readWav(filePath) {
     const channels = buf.readUInt16LE(22);
     const bps = buf.readUInt16LE(34);
     if (bps !== 16) throw new Error('Only 16-bit WAV supported');
-
-    let off = 12;
-    let dataOff = -1, dataLen = 0;
+    let off = 12, dataOff = -1, dataLen = 0;
     while (off + 8 <= buf.length) {
         const id = buf.slice(off, off + 4).toString();
         const size = buf.readUInt32LE(off + 4);
@@ -40,7 +35,6 @@ function readWav(filePath) {
         off += 8 + size;
     }
     if (dataOff < 0) throw new Error('No data chunk');
-
     const samples = new Float32Array(dataLen / 2);
     for (let i = 0; i < samples.length; i++) {
         samples[i] = buf.readInt16LE(dataOff + i * 2) / 32768;
@@ -93,42 +87,52 @@ function analyze(samples, sampleRate) {
     return frames;
 }
 
-const result = {};
-let totalProcessed = 0, totalMissing = 0;
+for (const lang of langs) {
+    const data = JSON.parse(fs.readFileSync(path.join(i18nDir, `${lang}.json`), 'utf8'));
+    const langDir = path.join(voicesRoot, lang);
+    fs.mkdirSync(langDir, { recursive: true });
+    console.log(`\n=== ${lang.toUpperCase()} ===`);
 
-for (const item of faq.items) {
-    const variants = [];
-    const answers = item.answers || [];
-    for (let i = 0; i < answers.length; i++) {
-        const variantId = `${item.id}_v${i + 1}`;
-        const wavPath = path.join(voicesDir, `${variantId}.wav`);
-        if (!fs.existsSync(wavPath)) {
-            console.log(`  · ${variantId} (no .wav, skip)`);
-            totalMissing++;
-            variants.push(null);
-            continue;
-        }
-        try {
-            const { samples, sampleRate } = readWav(wavPath);
-            const frames = analyze(samples, sampleRate);
-            const duration = +(samples.length / sampleRate).toFixed(3);
-            variants.push({ duration, frames });
-            console.log(`  ✓ ${variantId} → ${frames.length} frames / ${duration}s`);
-            totalProcessed++;
-        } catch (e) {
-            console.log(`  ✗ ${variantId} : ${e.message}`);
-            variants.push(null);
-        }
-    }
-    result[item.id] = {
-        question: item.question,
-        answers,
-        variants,
+    // visemes.json embarque AUSSI les textes du site → 1 seul fetch par langue côté runtime.
+    const result = {
+        lang: data.lang,
+        site: data.site,
+        clips: {},
     };
+    let processed = 0, missing = 0;
+    for (const item of data.items) {
+        const variants = [];
+        for (let i = 0; i < (item.answers || []).length; i++) {
+            const variantId = `${item.id}_v${i + 1}`;
+            const wavPath = path.join(langDir, `${variantId}.wav`);
+            if (!fs.existsSync(wavPath)) {
+                console.log(`  · ${variantId} (no .wav)`);
+                missing++;
+                variants.push(null);
+                continue;
+            }
+            try {
+                const { samples, sampleRate } = readWav(wavPath);
+                const frames = analyze(samples, sampleRate);
+                const duration = +(samples.length / sampleRate).toFixed(3);
+                variants.push({ duration, frames });
+                console.log(`  ✓ ${variantId} → ${frames.length}f / ${duration}s`);
+                processed++;
+            } catch (e) {
+                console.log(`  ✗ ${variantId}: ${e.message}`);
+                variants.push(null);
+            }
+        }
+        result.clips[item.id] = {
+            question: item.question,
+            answers: item.answers,
+            variants,
+        };
+    }
+    const outPath = path.join(langDir, 'visemes.json');
+    fs.writeFileSync(outPath, JSON.stringify(result));
+    const sizeKb = (fs.statSync(outPath).size / 1024).toFixed(0);
+    console.log(`→ ${outPath} (${sizeKb} Ko) — ${processed} ok, ${missing} missing`);
 }
 
-const outPath = path.join(voicesDir, 'visemes.json');
-fs.writeFileSync(outPath, JSON.stringify(result));
-const sizeKb = (fs.statSync(outPath).size / 1024).toFixed(1);
-console.log(`\n→ Écrit ${outPath} (${sizeKb} Ko)`);
-console.log(`→ ${totalProcessed} variantes traitées, ${totalMissing} sans WAV`);
+console.log('\n→ Terminé.');
